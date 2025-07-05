@@ -25,6 +25,37 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 LV_IMG_DECLARE(balloon);
 LV_IMG_DECLARE(mountain);
+LV_IMG_DECLARE(anon_p1);
+LV_IMG_DECLARE(anon_p2);
+LV_IMG_DECLARE(anon_p3);
+LV_IMG_DECLARE(anon_p4);
+LV_IMG_DECLARE(anon_p5);
+LV_IMG_DECLARE(anon_p6);
+LV_IMG_DECLARE(anon_p7);
+LV_IMG_DECLARE(anon_p8);
+LV_IMG_DECLARE(anon_p9);
+LV_IMG_DECLARE(anon_p10);
+LV_IMG_DECLARE(anon_p11);
+LV_IMG_DECLARE(anon_p12);
+LV_IMG_DECLARE(anon_p13);
+LV_IMG_DECLARE(anon_p14);
+
+const lv_img_dsc_t *anon_imgs[] = {
+    &anon_p1, 
+    &anon_p2, 
+    &anon_p3, 
+    &anon_p4, 
+    &anon_p5, 
+    &anon_p6, 
+    &anon_p7, 
+    &anon_p8,
+    &anon_p9, 
+    &anon_p10, 
+    &anon_p11, 
+    &anon_p12, 
+    &anon_p13, 
+    &anon_p14,
+};
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
@@ -114,9 +145,18 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
 
-    lv_obj_t *art = lv_img_create(widget->obj);
-    bool random = sys_rand32_get() & 1;
-    lv_img_set_src(art, random ? &balloon : &mountain);
+    // lv_obj_t *art = lv_img_create(widget->obj);
+    // bool random = sys_rand32_get() & 1;
+    // lv_img_set_src(art, random ? &balloon : &mountain);
+    // lv_img_set_src(art, &anon_p1);
+
+    lv_obj_t * art = lv_animimg_create(widget->obj);            //<--
+    lv_obj_center(art);                                         //<--
+    lv_animimg_set_src(art, (const void **) anon_imgs, 14);     //<--
+    lv_animimg_set_duration(art, 2800);                         //<--
+    lv_animimg_set_repeat_count(art, LV_ANIM_REPEAT_INFINITE);  //<--
+    lv_animimg_start(art);                                      //<--
+
     lv_obj_align(art, LV_ALIGN_TOP_LEFT, 0, 0);
 
     sys_slist_append(&widgets, &widget->node);
